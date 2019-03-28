@@ -39,7 +39,7 @@
       <Group guid="guidSetStartupButtonPackageCmdSet" id="MyMenuGroup" priority="0x0600">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS"/>
       </Group>
-      <Group guid="guidSetStartupButtonPackageCmdSet" id="SolutionToolbarGroup" priority="0xF000">
+      <Group guid="guidSetStartupButtonPackageCmdSet" id="SolutionToolbarGroup" priority="0x0000">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_TOOL_PROJWIN"/>
       </Group>
     </Groups>
