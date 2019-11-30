@@ -75,7 +75,10 @@ namespace SolutionToolbarSetStartup
             {
                 menuCommand.Visible = false;
                 Array projects = GetActiveSolutionProjects(sender);
-                if (projects.Length == 1 && string.Compare(EnvDTE.Constants.vsProjectKindUnmodeled, ((EnvDTE.Project)projects.GetValue(0)).Kind, StringComparison.OrdinalIgnoreCase) != 0)
+                if (projects.Length == 1
+                    && string.Compare(EnvDTE.Constants.vsProjectKindUnmodeled, ((EnvDTE.Project)projects.GetValue(0)).Kind, StringComparison.OrdinalIgnoreCase) != 0
+                    && string.Compare(EnvDTE.Constants.vsProjectKindSolutionItems, ((EnvDTE.Project)projects.GetValue(0)).Kind, StringComparison.OrdinalIgnoreCase) != 0
+                    )
                 {
                     menuCommand.Visible = true;
                 }
@@ -92,7 +95,8 @@ namespace SolutionToolbarSetStartup
                 foreach (EnvDTE.Project project in projects)
                 {
                     //if (project.FullName.EndsWith(".csproj"))
-                    if (string.Compare(EnvDTE.Constants.vsProjectKindUnmodeled, project.Kind, StringComparison.OrdinalIgnoreCase) != 0)
+                    if (string.Compare(EnvDTE.Constants.vsProjectKindUnmodeled, project.Kind, StringComparison.OrdinalIgnoreCase) != 0
+                        || string.Compare(EnvDTE.Constants.vsProjectKindSolutionItems, project.Kind, StringComparison.OrdinalIgnoreCase) == 0)
                     {
                         menuCommand.Visible = true;
                         break;
@@ -108,6 +112,10 @@ namespace SolutionToolbarSetStartup
             {
                 menuCommand.Visible = false;
                 Array projects = GetActiveSolutionProjects(sender);
+                if (projects.Length == 1 && string.Compare(EnvDTE.Constants.vsProjectKindSolutionItems, ((EnvDTE.Project)projects.GetValue(0)).Kind, StringComparison.OrdinalIgnoreCase) == 0)
+                {
+                    menuCommand.Visible = true;
+                }
                 if (projects.Length > 1)
                 {
                     foreach (EnvDTE.Project project in projects)
@@ -126,6 +134,18 @@ namespace SolutionToolbarSetStartup
         private Array GetActiveSolutionProjects(object sender)
         {
             EnvDTE.DTE dte = (EnvDTE.DTE)Package.GetGlobalService(typeof(EnvDTE.DTE));
+
+            if (dte != null)
+            {
+                var projects = (Array)dte.ActiveSolutionProjects;
+                if (projects.Length > 0)
+                {
+                    var first = projects.GetValue(0);
+                    var project = (EnvDTE.Project)first;
+                    var kind = project.Kind;
+                    System.Diagnostics.Debug.WriteLine(kind);
+                }
+            }
 
             return dte == null ? null : (Array)dte.ActiveSolutionProjects;
         }
