@@ -71,6 +71,24 @@
           <ButtonText>Set as StartUp Project</ButtonText>
         </Strings>
       </Button>
+      <Button guid="guidSetStartupButtonPackageCmdSet" id="UnloadButtonId" priority="0x0101" type="Button">
+        <Parent guid="guidSetStartupButtonPackageCmdSet" id="SolutionToolbarGroup" />
+        <Icon guid="guidImages" id="bmpPicX" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Unload Project</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidSetStartupButtonPackageCmdSet" id="ReloadButtonId" priority="0x0102" type="Button">
+        <Parent guid="guidSetStartupButtonPackageCmdSet" id="SolutionToolbarGroup" />
+        <Icon guid="guidImages" id="bmpPicSearch" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Reload Project</ButtonText>
+        </Strings>
+      </Button>
     </Buttons>
 
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
@@ -87,6 +105,10 @@
   <VisibilityConstraints>
     <VisibilityItem guid="guidSetStartupButtonPackageCmdSet" id="SetStartupButtonId" context="UICONTEXT_SolutionHasSingleProject" />
     <VisibilityItem guid="guidSetStartupButtonPackageCmdSet" id="SetStartupButtonId" context="UICONTEXT_SolutionHasMultipleProjects" />
+    <VisibilityItem guid="guidSetStartupButtonPackageCmdSet" id="UnloadButtonId" context="UICONTEXT_SolutionHasSingleProject" />
+    <VisibilityItem guid="guidSetStartupButtonPackageCmdSet" id="UnloadButtonId" context="UICONTEXT_SolutionHasMultipleProjects" />
+    <VisibilityItem guid="guidSetStartupButtonPackageCmdSet" id="ReloadButtonId" context="UICONTEXT_SolutionHasSingleProject" />
+    <VisibilityItem guid="guidSetStartupButtonPackageCmdSet" id="ReloadButtonId" context="UICONTEXT_SolutionHasMultipleProjects" />
   </VisibilityConstraints>
 
   <Symbols>
@@ -97,6 +119,8 @@
     <GuidSymbol name="guidSetStartupButtonPackageCmdSet" value="{977f99b5-05cb-4e0f-9a3c-31500f5659ac}">
       <IDSymbol name="MyMenuGroup" value="0x1020" />
       <IDSymbol name="SetStartupButtonId" value="0x0100" />
+      <IDSymbol name="UnloadButtonId" value="0x0101" />
+      <IDSymbol name="ReloadButtonId" value="0x0102" />
       <IDSymbol name="SolutionToolbarGroup" value="0x0190"/>
     </GuidSymbol>
 
