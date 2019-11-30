@@ -80,7 +80,7 @@
           <ButtonText>Unload Project</ButtonText>
         </Strings>
       </Button>
-      <!--<Button guid="guidSetStartupButtonPackageCmdSet" id="ReloadButtonId" priority="0x0102" type="Button">
+      <Button guid="guidSetStartupButtonPackageCmdSet" id="ReloadButtonId" priority="0x0102" type="Button">
         <Parent guid="guidSetStartupButtonPackageCmdSet" id="SolutionToolbarGroup" />
         <Icon guid="guidImages" id="bmpPicSearch" />
         <CommandFlag>DefaultInvisible</CommandFlag>
@@ -88,7 +88,7 @@
         <Strings>
           <ButtonText>Reload Project</ButtonText>
         </Strings>
-      </Button>-->
+      </Button>
     </Buttons>
 
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->

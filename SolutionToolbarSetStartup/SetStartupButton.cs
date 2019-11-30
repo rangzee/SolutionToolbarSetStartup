@@ -52,17 +52,82 @@ namespace SolutionToolbarSetStartup
             if (commandService != null)
             {
                 var menuStartupCommandID = new CommandID(CommandSet, CommandStartupId);
-                var menuStartupItem = new MenuCommand(this.StartupMenuItemCallback, menuStartupCommandID);
+                var menuStartupItem = new OleMenuCommand(this.StartupMenuItemCallback, menuStartupCommandID);
+                menuStartupItem.BeforeQueryStatus += menuStartupItem_BeforeQueryStatus;
                 commandService.AddCommand(menuStartupItem);
 
                 var menuUnloadCommandID = new CommandID(CommandSet, CommandUnloadId);
-                var menuUnloadItem = new MenuCommand(this.UnloadMenuItemCallback, menuUnloadCommandID);
+                var menuUnloadItem = new OleMenuCommand(this.UnloadMenuItemCallback, menuUnloadCommandID);
+                menuUnloadItem.BeforeQueryStatus += menuUnloadItem_BeforeQueryStatus;
                 commandService.AddCommand(menuUnloadItem);
 
                 var menuReloadCommandID = new CommandID(CommandSet, CommandReloadId);
-                var menuReloadItem = new MenuCommand(this.ReloadMenuItemCallback, menuReloadCommandID);
+                var menuReloadItem = new OleMenuCommand(this.ReloadMenuItemCallback, menuReloadCommandID);
+                menuReloadItem.BeforeQueryStatus += menuReloadItem_BeforeQueryStatus;
                 commandService.AddCommand(menuReloadItem);
             }
+        }
+
+        public void menuStartupItem_BeforeQueryStatus(object sender, EventArgs e)
+        {
+            OleMenuCommand menuCommand = sender as OleMenuCommand;
+            if (menuCommand != null)
+            {
+                menuCommand.Visible = false;
+                Array projects = GetActiveSolutionProjects(sender);
+                if (projects.Length == 1 && string.Compare(EnvDTE.Constants.vsProjectKindUnmodeled, ((EnvDTE.Project)projects.GetValue(0)).Kind, StringComparison.OrdinalIgnoreCase) != 0)
+                {
+                    menuCommand.Visible = true;
+                }
+            }
+        }
+
+        public void menuUnloadItem_BeforeQueryStatus(object sender, EventArgs e)
+        {
+            OleMenuCommand menuCommand = sender as OleMenuCommand;
+            if (menuCommand != null)
+            {
+                menuCommand.Visible = false;
+                Array projects = GetActiveSolutionProjects(sender);
+                foreach (EnvDTE.Project project in projects)
+                {
+                    //if (project.FullName.EndsWith(".csproj"))
+                    if (string.Compare(EnvDTE.Constants.vsProjectKindUnmodeled, project.Kind, StringComparison.OrdinalIgnoreCase) != 0)
+                    {
+                        menuCommand.Visible = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        public void menuReloadItem_BeforeQueryStatus(object sender, EventArgs e)
+        {
+            OleMenuCommand menuCommand = sender as OleMenuCommand;
+            if (menuCommand != null)
+            {
+                menuCommand.Visible = false;
+                Array projects = GetActiveSolutionProjects(sender);
+                if (projects.Length > 1)
+                {
+                    foreach (EnvDTE.Project project in projects)
+                    {
+                        //if (project.FullName.EndsWith(".csproj"))
+                        if (string.Compare(EnvDTE.Constants.vsProjectKindUnmodeled, project.Kind, StringComparison.OrdinalIgnoreCase) == 0)
+                        {
+                            menuCommand.Visible = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        private Array GetActiveSolutionProjects(object sender)
+        {
+            EnvDTE.DTE dte = (EnvDTE.DTE)Package.GetGlobalService(typeof(EnvDTE.DTE));
+
+            return dte == null ? null : (Array)dte.ActiveSolutionProjects;
         }
 
         /// <summary>
